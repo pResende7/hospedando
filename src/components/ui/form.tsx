@@ -1,176 +1,255 @@
-import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
+import React from "react";
 import {
-  Controller,
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form"
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Instagram,
+  Facebook,
+  MessageCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { AnimatedSection } from "@/components/ui/animated-section";
+import { AnimatedList } from "@/components/ui/animated-list";
 
-import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { useEmail } from "@/hooks/use-email";
 
-const Form = FormProvider
+const Contact = () => {
+  const { toast } = useToast();
+  const { sendEmail, isLoading, error } = useEmail();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
 
-type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = {
-  name: TName
-}
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      await sendEmail(formData);
+      
+      toast({
+        title: "Mensagem enviada com sucesso!",
+        description: "Entraremos em contato em breve para agendar sua consulta.",
+      });
 
-const FormField = <
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->({
-  ...props
-}: ControllerProps<TFieldValues, TName>) => {
-  return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
-      <Controller {...props} />
-    </FormFieldContext.Provider>
-  )
-}
+      // Limpar formulário
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      toast({
+        title: "Erro ao enviar mensagem",
+        description: "Tente novamente ou entre em contato diretamente.",
+        variant: "destructive",
+      });
+    }
+  };
 
-const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext)
-  const itemContext = React.useContext(FormItemContext)
-  const { getFieldState, formState } = useFormContext()
+  const contactInfo = [
+    {
+      icon: <Phone className="h-6 w-6 text-primary" />,
+      title: "Telefone",
+      content: "(11) 99999-9999",
+      action: "tel:+5511999999999",
+    },
+    {
+      icon: <Mail className="h-6 w-6 text-primary" />,
+      title: "E-mail",
+      content: "pedroresendec_@hotmail.com",
+      action: "mailto:pedroresendec_@hotmail.com",
+    },
+    {
+      icon: <MapPin className="h-6 w-6 text-primary" />,
+      title: "Endereço",
+      content: "Rua das Flores, 123\nVila Madalena - São Paulo/SP",
+      action: null,
+    },
+    {
+      icon: <Clock className="h-6 w-6 text-primary" />,
+      title: "Horário de Funcionamento",
+      content: "Seg à Sex: 8h às 18h\nSáb: 8h às 14h",
+      action: null,
+    },
+  ];
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
-  if (!fieldContext) {
-    throw new Error("useFormField should be used within <FormField>")
-  }
-
-  const { id } = itemContext
-
-  return {
-    id,
-    name: fieldContext.name,
-    formItemId: `${id}-form-item`,
-    formDescriptionId: `${id}-form-item-description`,
-    formMessageId: `${id}-form-item-message`,
-    ...fieldState,
-  }
-}
-
-type FormItemContextValue = {
-  id: string
-}
-
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-)
-
-const FormItem = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const id = React.useId()
-
-  return (
-    <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />
-    </FormItemContext.Provider>
-  )
-})
-FormItem.displayName = "FormItem"
-
-const FormLabel = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
-
-  return (
-    <Label
-      ref={ref}
-      className={cn(error && "text-destructive", className)}
-      htmlFor={formItemId}
-      {...props}
-    />
-  )
-})
-FormLabel.displayName = "FormLabel"
-
-const FormControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+  const openWhatsApp = () => {
+    const message = encodeURIComponent(
+      "Olá! Gostaria de agendar uma consulta na Essence."
+    );
+    window.open(`https://wa.me/5511999999999?text=${message}`, "_blank");
+  };
 
   return (
-    <Slot
-      ref={ref}
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
-  )
-})
-FormControl.displayName = "FormControl"
+    <section id="contact" className="pt-20 py-40 bg-gradient-to-r from-zinc-900 to-zinc-900">
+      <div className="container mx-auto px-4">
+        <AnimatedSection animation="slideUp" delay={200}>
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-text-light font-elegant">
+              Entre em <span className="text-primary animate-glowSEM">Contato</span>
+            </h2>
+            <p className="text-xl text-text-muted font-elegant max-w-3xl mx-auto">
+              Agende sua consulta e comece sua jornada para o sorriso dos seus sonhos.
+            </p>
+          </div>
+        </AnimatedSection>
 
-const FormDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => {
-  const { formDescriptionId } = useFormField()
+        <div className="grid lg:grid-cols-2 gap-16">
+          <AnimatedSection animation="slideRight" delay={300}>
+            <div>
+              <Card className="shadow-elegant border-navy-border hover:shadow-cyan transition-all duration-500 bg-navy-card">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-text-light font-elegant mb-6">
+                    Agende sua Consulta
+                  </h3>
 
-  return (
-    <p
-      ref={ref}
-      id={formDescriptionId}
-      className={cn("text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  )
-})
-FormDescription.displayName = "FormDescription"
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <Input
+                      name="name"
+                      placeholder="Seu nome completo"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="font-elegant"
+                    />
 
-const FormMessage = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
-  const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message) : children
+                    <Input
+                      name="email"
+                      type="email"
+                      placeholder="Seu melhor e-mail"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="font-elegant"
+                    />
 
-  if (!body) {
-    return null
-  }
+                    <Input
+                      name="phone"
+                      type="tel"
+                      placeholder="Seu telefone/WhatsApp"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                      className="font-elegant"
+                    />
 
-  return (
-    <p
-      ref={ref}
-      id={formMessageId}
-      className={cn("text-sm font-medium text-destructive", className)}
-      {...props}
-    >
-      {body}
-    </p>
-  )
-})
-FormMessage.displayName = "FormMessage"
+                    <Textarea
+                      name="message"
+                      placeholder="Conte-nos sobre o que você gostaria de tratar..."
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      rows={4}
+                      className="font-elegant"
+                    />
 
-export {
-  useFormField,
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  FormField,
-}
+                    <Button
+                      type="submit"
+                      variant="luxury"
+                      size="lg"
+                      className="w-full font-elegant"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Enviando..." : "Enviar Mensagem"}
+                    </Button>
+                  </form>
+
+                  <div className="mt-6 pt-6 border-t border-rose-elegant/20">
+                    <p className="text-text-muted font-elegant text-center mb-4">
+                      Ou entre em contato via WhatsApp:
+                    </p>
+                    <Button
+                      variant="electric"
+                      size="lg"
+                      className="w-full font-elegant"
+                      onClick={openWhatsApp}
+                    >
+                      <MessageCircle className="h-5 w-5 mr-2" />
+                      Conversar no WhatsApp
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection animation="slideLeft" delay={400}>
+            <div className="space-y-6">
+              <AnimatedList animation="slideUp" staggerDelay={150}>
+                <div className="grid gap-6">
+                  {contactInfo.map((info, index) => (
+                    <Card
+                      key={index}
+                      className="border-navy-border hover:shadow-cyan hover:scale-105 transition-all duration-500 group bg-navy-card"
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-4">
+                          <div className="group-hover:animate-pulse-glow">{info.icon}</div>
+                          <div>
+                            <h4 className="font-bold text-text-light font-elegant mb-1 group-hover:text-primary transition-colors duration-300">
+                              {info.title}
+                            </h4>
+                            {info.action ? (
+                              <a
+                                href={info.action}
+                                className="text-text-muted font-elegant hover:text-primary transition-colors duration-300"
+                              >
+                                {info.content}
+                              </a>
+                            ) : (
+                              <p className="text-text-muted font-elegant whitespace-pre-line">
+                                {info.content}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </AnimatedList>
+
+              <Card className="border-navy-border bg-gradient-luxury hover:shadow-electric transition-all duration-500">
+                <CardContent className="p-6">
+                  <h4 className="font-bold text-text-light font-elegant mb-4 text-center">
+                    Siga-nos nas Redes Sociais
+                  </h4>
+                  <div className="flex justify-center space-x-4">
+                    <Button variant="outline" size="icon" className="hover:bg-primary hover:text-primary-foreground">
+                      <Instagram className="h-5 w-5" />
+                    </Button>
+                    <Button variant="outline" size="icon" className="hover:bg-primary hover:text-primary-foreground">
+                      <Facebook className="h-5 w-5" />
+                    </Button>
+                    <Button variant="outline" size="icon" className="hover:bg-primary hover:text-primary-foreground">
+                      <MessageCircle className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  <p className="text-text-muted font-elegant text-center text-sm mt-4">
+                    @smilechiclinic
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </AnimatedSection>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Contact;

@@ -18,7 +18,7 @@ import { AnimatedList } from "@/components/ui/animated-list";
 
 const Contact = () => {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,18 +38,46 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(false);
+    setIsLoading(true);
+    
+    try {
+      // URL da API - usando a URL do Vercel para produção
+      const apiUrl = 'https://hospedando-1src450hq-pedroresendes-projects.vercel.app/api/send-email';
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          to: 'pedroresendec_@hotmail.com' // Garantir que o email seja enviado para o endereço correto
+        }),
+      });
 
-    toast({
-      title: "Mensagem enviada com sucesso!",
-      description: "Entraremos em contato em breve para agendar sua consulta.",
-    });
+      const result = await response.json();
 
-    setFormData({ name: "", email: "", phone: "", message: "" });
-    setIsSubmitting(true);
+      if (!response.ok) {
+        throw new Error(result.message || 'Erro ao enviar email');
+      }
+      
+      toast({
+        title: "Mensagem enviada com sucesso!",
+        description: "Entraremos em contato em breve para agendar sua consulta.",
+      });
+
+      // Limpar formulário
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      console.error('Erro ao enviar email:', err);
+      toast({
+        title: "Erro ao enviar mensagem",
+        description: "Tente novamente ou entre em contato diretamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -165,9 +193,9 @@ const Contact = () => {
                       variant="luxury"
                       size="lg"
                       className="w-full font-elegant"
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                     >
-                      {isSubmitting ? "Enviado" : "Enviar Mensagem"}
+                      {isLoading ? "Enviando..." : "Enviar Mensagem"}
                     </Button>
                   </form>
 

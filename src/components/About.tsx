@@ -2,6 +2,9 @@ import { Heart, Award, Users, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedList } from "@/components/ui/animated-list";
+import clinica1 from "@/assets/clinica.jpg";
+import clinica2 from "@/assets/clinica2.jpg";
+import clinica3 from "@/assets/clinica7.jpg";
 
 const About = () => {
   const values = [
@@ -31,6 +34,12 @@ const About = () => {
     },
   ];
 
+  const galleryImages = [
+    { src: clinica1, alt: "Clínica Essence - Ambiente Principal" },
+    { src: clinica2, alt: "Clínica Essence - Sala de Atendimento" },
+    { src: clinica3, alt: "Clínica Essence - Área de Tratamento" },
+  ];
+
   return (
     <section id="about" className="py-20 bg-navy-card">
       <div className="container mx-auto px-4">
@@ -48,71 +57,40 @@ const About = () => {
           </div>
         </AnimatedSection>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
-          {/* Content */}
-          <AnimatedSection animation="slideRight" delay={300}>
-            <div className="space-y-6">
-            <h3 className="text-3xl font-bold text-text-light font-elegant">
-              Nossa Missão
-            </h3>
-            <p className="text-text-muted font-elegant leading-relaxed text-lg">
-              Na Essence, acreditamos que um sorriso bonito vai além da estética
-              – é confiança, bem-estar e qualidade de vida. Nossa missão é
-              proporcionar tratamentos de excelência,
-              combinando técnica refinada com atendimento humanizado.
-            </p>
-            <p className="text-text-muted font-elegant leading-relaxed text-lg">
-              Trabalhamos com tecnologia de ponta e métodos inovadores para
-              garantir que cada paciente tenha uma experiência única e
-              resultados que superem suas expectativas.
-            </p>
+        {/* Gallery and Commitment */}
+        <div className="mb-16">
+          {/* Gallery */}
+          <AnimatedSection animation="slideUp" delay={300}>
+                         <div className="flex justify-center mb-12">
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-[120rem]">
+                {galleryImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className="group relative overflow-hidden rounded-xl hover:scale-105 transition-all duration-300"
+                  >
+                                         <img
+                       src={image.src}
+                       alt={image.alt}
+                       className="w-full aspect-video object-cover group-hover:brightness-110 transition-all duration-300"
+                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
 
-            <div className="rounded-xl p-6 mt-8 hover:shadow-[0px_0px_60px_14px_rgba(255,_255,_255,_0.05)] transition-all duration-300 border border-electric-white/30">
-              <blockquote className="text-text-light font-elegant italic text-lg">
-                "Nosso compromisso é com a excelência em cada detalhe, porque
-                cada sorriso é único e merece cuidado especial."
-              </blockquote>
-            </div>
-          </div>
-        </AnimatedSection>
-
-          {/* Stats */}
-          <AnimatedSection animation="slideLeft" delay={400}>
-            <div className="grid grid-cols-2 gap-6">
-            <div className="bg-background rounded-xl p-6 text-center shadow-elegant hover:shadow-cyan hover:scale-105 transition-all duration-300 group">
-              <div className="text-4xl font-bold text-primary font-elegant mb-2 group-hover:animate-glowSEM">
-                500+
-              </div>
-              <div className="text-text-muted font-elegant">
-                Pacientes Atendidos
+          {/* Commitment */}
+          <AnimatedSection animation="slideUp" delay={400}>
+            <div className="text-center">
+              <div className="rounded-xl p-8 hover:shadow-[0px_0px_60px_14px_rgba(255,_255,_255,_0.05)] transition-all duration-300 border border-electric-white/30 max-w-2xl mx-auto">
+                <blockquote className="text-text-light font-elegant italic text-xl">
+                  "Nosso compromisso é com a excelência em cada detalhe, porque
+                  cada sorriso é único e merece cuidado especial."
+                </blockquote>
               </div>
             </div>
-            <div className="bg-background rounded-xl p-6 text-center shadow-elegant hover:shadow-cyan hover:scale-105 transition-all duration-300 group">
-              <div className="text-4xl font-bold text-primary font-elegant mb-2 group-hover:animate-glowSEM">
-                15+
-              </div>
-              <div className="text-text-muted font-elegant">
-                Anos de Experiência
-              </div>
-            </div>
-            <div className="bg-background rounded-xl p-6 text-center shadow-elegant hover:shadow-cyan hover:scale-105 transition-all duration-300 group">
-              <div className="text-4xl font-bold text-primary font-elegant mb-2 group-hover:animate-glowSEM">
-                98%
-              </div>
-              <div className="text-text-muted font-elegant">
-                Satisfação dos Pacientes
-              </div>
-            </div>
-            <div className="bg-background rounded-xl p-6 text-center shadow-elegant hover:shadow-cyan hover:scale-105 transition-all duration-300 group">
-              <div className="text-4xl font-bold text-primary font-elegant mb-2 group-hover:animate-glowSEM">
-                24/7
-              </div>
-              <div className="text-text-muted font-elegant">
-                Suporte Disponível
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
+          </AnimatedSection>
         </div>
 
         {/* Values */}

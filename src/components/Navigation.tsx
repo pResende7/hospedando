@@ -52,12 +52,6 @@ const Navigation = () => {
               Resultados
             </button>
             <button
-              onClick={() => scrollToSection("team")}
-              className="text-text-light hover:text-primary transition-all duration-300 font-elegant hover:scale-105 relative after:absolute after:w-0 after:h-0.5 after:bg-primary after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full"
-            >
-              Equipe
-            </button>
-            <button
               onClick={() => scrollToSection("dr-lucas")}
               className="text-text-light hover:text-primary transition-all duration-300 font-elegant hover:scale-105 relative after:absolute after:w-0 after:h-0.5 after:bg-primary after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full"
             >
