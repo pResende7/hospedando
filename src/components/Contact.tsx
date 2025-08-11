@@ -5,20 +5,15 @@ import {
   MapPin,
   Clock,
   Instagram,
-  Facebook,
-  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedList } from "@/components/ui/animated-list";
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,87 +31,93 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      // URL da API - usando a URL do Vercel para produção
-      const apiUrl = 'https://hospedando-1src450hq-pedroresendes-projects.vercel.app/api/send-email';
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          to: 'pedroresendec_@hotmail.com' // Garantir que o email seja enviado para o endereço correto
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Erro ao enviar email');
-      }
-      
-      toast({
-        title: "Mensagem enviada com sucesso!",
-        description: "Entraremos em contato em breve para agendar sua consulta.",
-      });
-
-      // Limpar formulário
-      setFormData({ name: "", email: "", phone: "", message: "" });
-    } catch (err) {
-      console.error('Erro ao enviar email:', err);
-      toast({
-        title: "Erro ao enviar mensagem",
-        description: "Tente novamente ou entre em contato diretamente.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const contactInfo = [
     {
       icon: <Phone className="h-6 w-6 text-primary" />,
       title: "Telefone",
-      content: "(11) 99999-9999",
-      action: "tel:+5511999999999",
+      content: "(69) 99973-1490",
+      action: "tel:+556999731490",
     },
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "E-mail",
-      content: "pedroresendec_hotmail.com",
-      action: "mailto:pedroresendec_hotmail.com",
+      content: "lucaslbreaboral@gmail.com",
+      action: "mailto:lucaslbreaboral@gmail.com",
     },
     {
       icon: <MapPin className="h-6 w-6 text-primary" />,
       title: "Endereço",
-      content: "Rua das Flores, 123\nVila Madalena - São Paulo/SP",
+      content: "Av. Gov. Jorge Teixeira, 3137 - sala 6 - Embratel\n Porto Velho - RO, 76803-859",
       action: null,
     },
     {
       icon: <Clock className="h-6 w-6 text-primary" />,
       title: "Horário de Funcionamento",
-      content: "Seg à Sex: 8h às 18h\nSáb: 8h às 14h",
+      content: "Seg à Sex: 8h às 18h",
       action: null,
     },
   ];
 
   const openWhatsApp = () => {
-    const message = encodeURIComponent(
-      "Olá! Gostaria de agendar uma consulta na Essence."
-    );
-    window.open(`https://wa.me/5511999999999?text=${message}`, "_blank");
+    const message = `Nome: ${formData.name}
+Email: ${formData.email}
+Telefone: ${formData.phone}
+O que gostaria de tratar: ${formData.message}`;
+
+    // Detectar se é dispositivo móvel
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    const phoneNumber = "+556999731490";   
+    const encodedMessage = encodeURIComponent(message);
+    
+    try {
+      if (isMobile) {
+        // Para dispositivos móveis, usar protocolo nativo primeiro
+        const waProtocolUrl = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+        window.location.href = waProtocolUrl;
+        
+        // Fallback para dispositivos móveis se o protocolo falhar
+        setTimeout(() => {
+          const waMeUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+          window.open(waMeUrl, "_blank");
+        }, 1000);
+      } else {
+        // Para desktop, tentar wa.me primeiro
+        const waMeUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        const waMeWindow = window.open(waMeUrl, "_blank");
+        
+        // Se falhar, tentar api.whatsapp.com
+        if (!waMeWindow || waMeWindow.closed) {
+          setTimeout(() => {
+            const waWebUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+            window.open(waWebUrl, "_blank");
+          }, 100);
+        }
+      }
+      
+      // Limpar formulário após tentar abrir WhatsApp
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      
+    } catch (error) {
+      console.error("Erro ao abrir WhatsApp:", error);
+      
+      // Fallback: mostrar instruções para o usuário
+      alert(`Não foi possível abrir o WhatsApp automaticamente. 
+      
+Por favor, copie esta mensagem e envie manualmente para o WhatsApp:
+
+${message}
+
+Ou entre em contato pelo telefone: +55 (69) 99973-1490`);
+      
+      // Limpar formulário mesmo com erro
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    }
   };
 
   return (
-    <section id="contact" className="pt-20 py-40 bg-gradient-to-r from-zinc-900 to-zinc-900">
-      <div className="container mx-auto px-4">
+    <section id="contact" className="pt-10 py-20 bg-gradient-to-r from-zinc-900 to-zinc-900">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
         <AnimatedSection animation="slideUp" delay={200}>
           <div className="text-center space-y-4 mb-16">
@@ -131,17 +132,17 @@ const Contact = () => {
           </div>
         </AnimatedSection>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-16 items-start">
           {/* Contact Form */}
           <AnimatedSection animation="slideRight" delay={300}>
             <div>
               <Card className="shadow-elegant border-navy-border hover:shadow-cyan transition-all duration-500 bg-navy-card">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-text-light font-elegant mb-6">
+                <CardContent className="p-4 md:p-8">
+                  <h3 className="text-xl md:text-2xl font-bold text-text-light font-elegant mb-4 md:mb-6">
                     Agende sua Consulta
                   </h3>
 
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form className="space-y-4 md:space-y-6">
                     <div>
                       <Input
                         name="name"
@@ -189,30 +190,19 @@ const Contact = () => {
                     </div>
 
                     <Button
-                      type="submit"
+                      type="button"
                       variant="luxury"
                       size="lg"
                       className="w-full font-elegant"
-                      disabled={isLoading}
+                      onClick={openWhatsApp}
+                      disabled={!formData.name || !formData.email || !formData.phone || !formData.message}
                     >
-                      {isLoading ? "Enviando..." : "Enviar Mensagem"}
+                      <Phone className="h-5 w-5 mr-2" />
+                      Enviar via WhatsApp
                     </Button>
                   </form>
 
-                  <div className="mt-6 pt-6 border-t border-rose-elegant/20">
-                    <p className="text-text-muted font-elegant text-center mb-4">
-                      Ou entre em contato via WhatsApp:
-                    </p>
-                    <Button
-                      variant="electric"
-                      size="lg"
-                      className="w-full font-elegant"
-                      onClick={openWhatsApp}
-                    >
-                      <MessageCircle className="h-5 w-5 mr-2" />
-                      Conversar no WhatsApp
-                    </Button>
-                  </div>
+                  {/* Removendo a seção do WhatsApp duplicada */}
                 </CardContent>
               </Card>
             </div>
@@ -220,17 +210,17 @@ const Contact = () => {
 
           {/* Contact Info */}
           <AnimatedSection animation="slideLeft" delay={400}>
-            <div className="space-y-6">
+            <div className="w-full space-y-4 md:space-y-6">
             
               <AnimatedList animation="slideUp" staggerDelay={150}>
-                <div className="grid gap-6">
+                <div className="grid gap-4 md:gap-6">
                   {contactInfo.map((info, index) => (
                     <Card
                       key={index}
                       className="border-navy-border hover:shadow-cyan hover:scale-105 transition-all duration-500 group bg-navy-card"
                     >
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
+                      <CardContent className="p-4 md:p-6">
+                        <div className="flex items-start space-x-3 md:space-x-4">
                           <div className="group-hover:animate-pulse-glow">
                             {info.icon}
                           </div>
@@ -260,35 +250,50 @@ const Contact = () => {
 
               {/* Social Media */}
               <Card className="border-navy-border bg-gradient-luxury hover:shadow-electric transition-all duration-500">
-                <CardContent className="p-6">
-                  <h4 className="font-bold text-text-light font-elegant mb-4 text-center">
+                <CardContent className="p-4 md:p-6">
+                  <h4 className="font-bold text-text-light font-elegant mb-3 md:mb-4 text-center text-lg md:text-xl">
                     Siga-nos nas Redes Sociais
                   </h4>
-                  <div className="flex justify-center space-x-4">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="hover:bg-primary hover:text-primary-foreground"
-                    >
-                      <Instagram className="h-5 w-5" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="hover:bg-primary hover:text-primary-foreground"
-                    >
-                      <Facebook className="h-5 w-5" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="hover:bg-primary hover:text-primary-foreground"
-                    >
-                      <MessageCircle className="h-5 w-5" />
-                    </Button>
-                  </div>
-                  <p className="text-text-muted font-elegant text-center text-sm mt-4">
-                    @smilechiclinic
+                                     <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 md:space-x-8">
+                     <div className="text-center">
+                       <a
+                         href="https://www.instagram.com/dr.lucaslbarrosimplantodontia/?hl=pt-br"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="inline-flex items-center justify-center w-10 h-10 rounded-md border border-input bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                         title="Instagram do Dr. Lucas"
+                       >
+                         <Instagram className="h-5 w-5" />
+                       </a>
+                       <p className="p-2 text-text-muted font-elegant text-xs md:text-sm mb-2">Instagram do Dr. Lucas</p>
+                     </div>
+                     
+                     <div className="text-center">
+                       <a
+                         href="https://www.instagram.com/essence.odonto.preventiva/?hl=pt-br"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="inline-flex items-center justify-center w-10 h-10 rounded-md border border-input bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                         title="Instagram da Clínica"
+                       >
+                         <Instagram className="h-5 w-5" />
+                       </a>
+                       <p className="p-2 text-text-muted font-elegant text-xs md:text-sm mb-2">Instagram da Clínica</p>
+                     </div>
+                     <div className="text-center">
+                       <a
+                         href="https://www.instagram.com/pedro._resende/?hl=pt-br"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="inline-flex items-center justify-center w-10 h-10 rounded-md border border-input bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                         title="Desenvolvedor do site"
+                       >
+                         <Instagram className="h-5 w-5" />
+                       </a>
+                       <p className="p-2 text-text-muted font-elegant text-xs md:text-sm mb-2">Desenvolvedor do site</p>
+                     </div>
+                   </div>
+                  <p className="text-text-muted font-elegant text-center text-xs md:text-sm mt-3 md:mt-4">
                   </p>
                 </CardContent>
               </Card>

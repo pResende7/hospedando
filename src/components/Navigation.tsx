@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Menu, X, Smile } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoEssence from "@/assets/LogoEssenceSemFundo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,7 +20,11 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2 group">
-            <Smile className="h-8 w-8 text-primary group-hover:animate-glowSEM transition-all duration-300 rounded-2xl animate-slide-up hover:shadow-electric transition-all duration-500 border border-navy-border "/>
+            <img 
+              src={logoEssence} 
+              alt="Logo Essence" 
+              className="h-8 w-8 group-hover:animate-glowSEM transition-all duration-300 rounded-2xl animate-slide-up hover:shadow-electric transition-all duration-500 border-navy-border"
+            />
             <span className="text-xl font-bold text-text-light font-elegant">
             Clínica Essence
             </span>
@@ -84,12 +89,6 @@ const Navigation = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-background border-b border-border">
               <button
-                onClick={() => scrollToSection("dr-lucas")}
-                className="block w-full text-left px-3 py-2 text-text-dark hover:text-primary transition-colors duration-300 font-elegant"
-              >
-                Conheça o Dr.
-              </button>
-              <button
                 onClick={() => scrollToSection("home")}
                 className="block w-full text-left px-3 py-2 text-text-dark hover:text-primary transition-colors duration-300 font-elegant"
               >
@@ -114,10 +113,10 @@ const Navigation = () => {
                 Resultados
               </button>
               <button
-                onClick={() => scrollToSection("team")}
+                onClick={() => scrollToSection("dr-lucas")}
                 className="block w-full text-left px-3 py-2 text-text-dark hover:text-primary transition-colors duration-300 font-elegant"
               >
-                Equipe
+                Conheça o Dr.
               </button>
               <div className="px-3 py-2">
                 <Button

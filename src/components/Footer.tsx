@@ -1,13 +1,11 @@
 import {
-  Smile,
   MapPin,
   Phone,
   Mail,
   Instagram,
-  Facebook,
-  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoEssence from "@/assets/LogoEssenceSemFundo.png";
 
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
@@ -21,7 +19,7 @@ const Footer = () => {
     const message = encodeURIComponent(
       "Olá! Gostaria de agendar uma consulta na Essence."
     );
-    window.open(`https://wa.me/5511999999999?text=${message}`, "_blank");
+    window.open(`https://wa.me/5569999731490?text=${message}`, "_blank");
   };
 
   return (
@@ -31,37 +29,17 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2 group">
-              <Smile className="h-8 w-8 text-primary group-hover:animate-glowSEM" />
+              <img 
+                src={logoEssence} 
+                alt="Logo Essence" 
+                className="h-8 w-8 group-hover:animate-glowSEM" 
+              />
               <span className="text-xl font-bold font-elegant ">Essence</span>
             </div>
             <p className="text-gray-300 font-elegant leading-relaxed">
               Transformando sorrisos com elegância, sofisticação e os mais
               avançados tratamentos ortodônticos e estéticos.
             </p>
-            <div className="flex space-x-3">
-              <Button
-                variant="outline"
-                size="icon"
-                className="hover:bg-primary hover:text-primary-foreground border-gray-600"
-              >
-                <Instagram className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="hover:bg-primary hover:text-primary-foreground border-gray-600"
-              >
-                <Facebook className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="hover:bg-primary hover:text-primary-foreground border-gray-600"
-                onClick={openWhatsApp}
-              >
-                <MessageCircle className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -115,18 +93,9 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-bold font-elegant">Nossos Serviços</h4>
             <ul className="space-y-2">
-              <li className="text-gray-300 font-elegant">Reabilitações</li>
-              <li className="text-gray-300 font-elegant">
-                Aparelhos Ortodônticos
-              </li>
-              <li className="text-gray-300 font-elegant">Estética Dental</li>
-              <li className="text-gray-300 font-elegant">
-                Lentes de Contato Dental
-              </li>
-              <li className="text-gray-300 font-elegant">Clareamento Dental</li>
-              <li className="text-gray-300 font-elegant">
-                Harmonização Orofacial
-              </li>
+              <li className="text-gray-300 font-elegant">Reabilitações</li>           
+              <li className="text-gray-300 font-elegant">Enxertos</li>            
+              <li className="text-gray-300 font-elegant">Cirurgias Guiadas</li>           
             </ul>
           </div>
 
@@ -137,29 +106,28 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
                 <div className="text-gray-300 font-elegant">
-                  <p>Rua das Flores, 123</p>
-                  <p>Vila Madalena - São Paulo/SP</p>
-                  <p>CEP: 05015-000</p>
+                <p>Av. Gov. Jorge Teixeira, 3137 Embratel</p>
+                <p>Porto Velho - RO, 76803-859</p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-primary" />
                 <a
-                  href="tel:+5511999999999"
+                  href="tel:+5569999731490"
                   className="text-gray-300 hover:text-primary transition-colors duration-300 font-elegant"
                 >
-                  (11) 99999-9999
+                  (69) 99973-1490
                 </a>
               </div>
 
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-primary" />
                 <a
-                  href="mailto:contato@smilechic.com.br"
+                  href="mailto:lucaslbreaboral@gmail.com"
                   className="text-gray-300 hover:text-primary transition-colors duration-300 font-elegant"
                 >
-                  contato@smilechic.com.br
+                  lucaslbreaboral@gmail.com
                 </a>
               </div>
             </div>
@@ -169,7 +137,7 @@ const Footer = () => {
               onClick={openWhatsApp}
               className="w-full font-elegant mt-4"
             >
-              <MessageCircle className="h-4 w-4 mr-2" />
+              <Phone className="h-4 w-4 mr-2" />
               WhatsApp
             </Button>
           </div>

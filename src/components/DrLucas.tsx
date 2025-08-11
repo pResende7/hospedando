@@ -6,7 +6,7 @@ import foto4 from "@/assets/foto4.jpg";
 
 const DrLucas = () => {
   return (
-    <section id="dr-lucas" className="pt-20 bg-gradient-to-r from-zinc-900 to-zinc-900">
+    <section id="dr-lucas" className=" bg-gradient-to-r from-zinc-900 to-zinc-900">
       <div className="container mx-auto px-4">
         <AnimatedSection animation="fadeIn" delay={200}>
           <div className="text-center mb-16">
@@ -29,7 +29,7 @@ const DrLucas = () => {
                   <img 
                     src={foto1} 
                     alt="Dr. Lucas Barros - Foto 1" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <div className="aspect-square rounded-2xl overflow-hidden">
@@ -37,6 +37,7 @@ const DrLucas = () => {
                     src={foto2} 
                     alt="Dr. Lucas Barros - Foto 2" 
                     className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center 30%' }}
                   />
                 </div>
               </div>
@@ -46,15 +47,16 @@ const DrLucas = () => {
                     src={foto3} 
                     alt="Dr. Lucas Barros - Foto 3" 
                     className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center 50%' }}
                   />
                 </div>
                 <div className="aspect-square rounded-2xl overflow-hidden">
                   <img 
                     src={foto4} 
                     alt="Dr. Lucas Barros - Foto 4" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
-                </div>
+                </div>  
               </div>
             </div>
           </AnimatedSection>
@@ -67,13 +69,11 @@ const DrLucas = () => {
                 <span className="text-primary">D</span>r. <span className="text-primary">L</span>ucas <span className="text-primary">B</span>arros
                 </h3>
                 <p className="text-lg text-text-muted font-elegant leading-relaxed">
-                  Formado em Odontologia pela Universidade Federal, o Dr. Lucas Barros 
-                  é especialista em odontologia estética e implantes dentários. Com mais 
+                  Dr. Lucas Barros é especialista em odontologia estética e implantes dentários. Com mais 
                   de 15 anos de experiência, já transformou mais de 500 sorrisos.
                 </p>
                 <p className="text-lg text-text-muted font-elegant leading-relaxed">
-                  Especializado em técnicas avançadas de harmonização facial e 
-                  reabilitação oral, o Dr. Lucas combina tecnologia de ponta com 
+                  Especializado em técnicas avançadas de reabilitação oral, o Dr. Lucas combina tecnologia de ponta com 
                   um olhar artístico para criar sorrisos naturais e harmoniosos.
                 </p>
               </div>
@@ -86,19 +86,19 @@ const DrLucas = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-text-muted font-elegant">Odontologia Estética</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-text-muted font-elegant">Implantes Dentários</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-text-muted font-elegant">Harmonização Facial</span>
+                    <span className="text-text-muted font-elegant">Reabilitação Oral</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-text-muted font-elegant">Reabilitação Oral</span>
+                    <span className="text-text-muted font-elegant">Manipulação de Tecidos Moles</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span className="text-text-muted font-elegant">Estética</span>
                   </div>
                 </div>
               </div>
@@ -111,15 +111,32 @@ const DrLucas = () => {
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-accent rounded-full"></div>
+                    <span className="text-text-muted font-elegant">Especialização em Prótese</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-accent rounded-full"></div>
                     <span className="text-text-muted font-elegant">Especialização em Implantodontia</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-accent rounded-full"></div>
-                    <span className="text-text-muted font-elegant">Pós-graduação em Odontologia Estética</span>
+                    <span className="text-text-muted font-elegant">Cordenador Clínido Facsete/SOEP</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-accent rounded-full"></div>
-                    <span className="text-text-muted font-elegant">Membro da Associação Brasileira de Odontologia</span>
+                    <span className="text-text-muted font-elegant">Prof esp. Prótese/dentistica - Facsete/SOEP</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-accent rounded-full"></div>
+                    <span className="text-text-muted font-elegant">Prof esp. Reab oral brasileiros - Facsete/SOEP</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-accent rounded-full"></div>
+                    <span className="text-text-muted font-elegant">Prof esp. Reab oral para estrangeiros - Facsete/SOEP</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-accent rounded-full"></div>
+                    <span className="text-text-muted font-elegant">Sócio fundador do Instituto cirúrgico Barros - ICB
+                    </span>
                   </div>
                 </div>
               </div>

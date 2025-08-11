@@ -14,39 +14,39 @@ const Services = () => {
       icon: <Shield className="h-12 w-12 text-primary" />,
       title: "Reabilitações",
       description:
-        "Aparelhos ortodônticos invisíveis para um sorriso perfeito sem comprometer sua aparência durante o tratamento.",
+        "Restauração funcional e estética do sorriso, devolvendo mastigação, fala e autoestima por meio de tratamentos integrados.",
       image: invisalignImage,
       features: [
-        "Transparente e discreto",
-        "Removível",
-        "Confortável",
-        "Resultados previsíveis",
+        "Reabilitação oral total",
+        "Prótese fixa sobre implantes",
+        "Prótese removível",
+        "Coroas e pontes dentárias"
       ],
     },
     {
       icon: <Smile className="h-12 w-12 text-primary" />,
       title: "Enxertos",
       description:
-        "Tratamentos ortodônticos personalizados com as mais modernas técnicas para corrigir o alinhamento dental.",
+        "Procedimentos avançados para reconstrução e regeneração óssea e gengival, garantindo suporte e estética para futuros tratamentos.",
       image: enxerto,
       features: [
-        "Aparelhos estéticos",
-        "Tecnologia avançada",
-        "Acompanhamento completo",
-        "Resultados duradouros",
+        "Enxerto ósseo autógeno",
+        "Enxerto ósseo com biomateriais",
+        "Enxerto gengival livre",
+        "Enxerto de tecido conjuntivo"
       ],
     },
     {
       icon: <Sparkles className="h-12 w-12 text-primary" />,
       title: "Cirurgias Guiadas",
       description:
-        "Transformações completas do sorriso com lentes de contato dental, clareamento e harmonização orofacial.",
+        "Precisão e segurança na instalação de implantes e procedimentos cirúrgicos, com auxílio de tecnologia 3D e planejamento digital.",
       image: aestheticsImage,
       features: [
-        "Lentes de contato",
-        "Clareamento dental",
-        "Harmonização orofacial",
-        "Design de sorriso",
+        "Planejamento digital da cirurgia",
+        "Instalação de implantes dentários guiados",
+        "Enxertos ósseos guiados",
+        "Regeneração tecidual guiada"
       ],
     },
   ];
@@ -136,7 +136,7 @@ const Services = () => {
       </div>
       
       {/* Linha divisória minimalista centralizada */}
-              <div className="flex justify-center py-20">
+              <div className="flex justify-center">
           <div className="w-4/5 h-px bg-gradient-to-r from-transparent via-zinc-600 to-transparent opacity-30"></div>
         </div>
     </section>
